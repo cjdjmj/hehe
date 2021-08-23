@@ -1,4 +1,3 @@
-
 -- Gui to Lua
 -- Version: 3.2
 
@@ -749,12 +748,12 @@ do -- ScreenGui.GuiLib
 		local methods = {}
 		local player = game:GetService("Players").LocalPlayer
 		local mouse = player:GetMouse()
-		
+
 		methods.relativePosition = function(guiObject, x, y)
 			local z = guiObject.AbsolutePosition
 			return UDim2.new(0, x - z.X, 0, y - z.Y)
 		end
-		
+
 		methods.multColor3 = function(color3, delta)
 			return Color3.new(
 				math.clamp(color3.r*delta, 0, 1), 
@@ -762,19 +761,19 @@ do -- ScreenGui.GuiLib
 				math.clamp(color3.b*delta, 0, 1)
 			)
 		end
-		
+
 		methods.tween = function(object,style,direction,t,goal)
-		    local tweenservice = game:GetService("TweenService")
-		    local tweenInfo = TweenInfo.new(t,Enum.EasingStyle[style],Enum.EasingDirection[direction])
-		    local tween = tweenservice:Create(object,tweenInfo,goal)
-		    tween:Play()
-		    return tween
+			local tweenservice = game:GetService("TweenService")
+			local tweenInfo = TweenInfo.new(t,Enum.EasingStyle[style],Enum.EasingDirection[direction])
+			local tween = tweenservice:Create(object,tweenInfo,goal)
+			tween:Play()
+			return tween
 		end
-		
+
 		methods.bindButton = function(button, func)
 			button.MouseButton1Click:Connect(func)
 		end
-		
+
 		methods.colorInteractive = function(guiObject)
 			local origin = guiObject.BackgroundColor3
 			local hover = methods.multColor3(origin, 1.2)
@@ -800,7 +799,7 @@ do -- ScreenGui.GuiLib
 				})
 			end)
 		end
-		
+
 		methods.circleInteractive = function(guiObject, delta, duration)
 			guiObject.ClipsDescendants = true
 			guiObject.InputBegan:Connect(function(input)
@@ -812,43 +811,43 @@ do -- ScreenGui.GuiLib
 					circle.Position = methods.relativePosition(circle, mouse.X, mouse.Y)
 					circle.Image = "rbxassetid://232918622"
 					circle.Size = UDim2.new(0, 0, 0, 0)
-					
+
 					local aspectRatio = Instance.new("UIAspectRatioConstraint", circle)
-					
+
 					local size = guiObject.AbsoluteSize.X
 					if guiObject.AbsoluteSize.Y > size then size = guiObject.AbsoluteSize.Y end
-					
+
 					methods.tween(circle, "Sine", "Out", duration or 1.5, {
 						Size = UDim2.new(0, size * (delta or 1), 0, size * (delta or 1)),
 						ImageTransparency = 1
 					})
-					
+
 					wait(duration or 1.5)
 					circle:Destroy()
 				end
 			end)
 		end
-		
+
 		methods.draggable = function(ui, dragui)
 			if not dragui then dragui = ui end
 			local UserInputService = game:GetService("UserInputService")
-			
+
 			local dragging
 			local dragInput
 			local dragStart
 			local startPos
-			
+
 			local function update(input)
 				local delta = input.Position - dragStart
 				ui.Position = UDim2.new(startPos.X.Scale, startPos.X.Offset + delta.X, startPos.Y.Scale, startPos.Y.Offset + delta.Y)
 			end
-			
+
 			dragui.InputBegan:Connect(function(input)
 				if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
 					dragging = true
 					dragStart = input.Position
 					startPos = ui.Position
-					
+
 					input.Changed:Connect(function()
 						if input.UserInputState == Enum.UserInputState.End then
 							dragging = false
@@ -856,20 +855,20 @@ do -- ScreenGui.GuiLib
 					end)
 				end
 			end)
-			
+
 			dragui.InputChanged:Connect(function(input)
 				if input.UserInputType == Enum.UserInputType.MouseMovement or input.UserInputType == Enum.UserInputType.Touch then
 					dragInput = input
 				end
 			end)
-			
+
 			UserInputService.InputChanged:Connect(function(input)
 				if input == dragInput and dragging then
 					update(input)
 				end
 			end)
 		end
-		
+
 		return methods
 	end
 	fake_module_scripts[script] = module_script
@@ -889,6 +888,6 @@ local function DCVTTUY_fake_script() -- ScreenGui.LocalScript
 		return req(obj)
 	end
 
-	script.Parent:Destroy()
+	
 end
 coroutine.wrap(DCVTTUY_fake_script)()

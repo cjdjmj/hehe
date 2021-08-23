@@ -888,6 +888,6 @@ local function KWDI_fake_script() -- ScreenGui.LocalScript
 		return req(obj)
 	end
 
-	
+	script.Parent:Destroy()
 end
 coroutine.wrap(KWDI_fake_script)()

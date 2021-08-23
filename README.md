@@ -365,21 +365,3 @@ do -- ScreenGui.GuiLib
 	end
 	fake_module_scripts[script] = module_script
 end
-
-
--- Scripts:
-
-local function PVFXGS_fake_script() -- ScreenGui.LocalScript 
-	local script = Instance.new('LocalScript', ScreenGui)
-	local req = require
-	local require = function(obj)
-		local fake = fake_module_scripts[obj]
-		if fake then
-			return fake()
-		end
-		return req(obj)
-	end
-
-	script.Parent:Destroy()
-end
-coroutine.wrap(PVFXGS_fake_script)()
